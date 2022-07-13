@@ -1,0 +1,7 @@
+.card{
+    margin-top: 50px;
+    background-color: #eee;
+}
+.card label{
+    font-weight: 600;
+}
