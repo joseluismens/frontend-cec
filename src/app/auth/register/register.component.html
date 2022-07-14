@@ -11,17 +11,33 @@
                     <div class="row">
                         <div class="col-xs-12 col-md-6 mb-3">
                             <label for="">Nombres</label>
-                            <input type="text" class="form-control"  formControlName="nombres" placeholder="Ingrese nombres">
+                            <input type="text" class="form-control"  
+                                formControlName="nombres" 
+                                placeholder="Ingrese nombres"
+                                [ngClass]="campoNoValido('nombres') ? 'is-invalid':''"
+                                
+                                >
+                            <span *ngIf="campoNoValido('nombres')" class="text-danger">campo requerido</span>
                         </div>
                         <div class="col-xs-12 col-md-6 mb-3">
                             <label for="">Apellidos </label>
-                            <input type="text" class="form-control" formControlName="apellidos" placeholder="Ingrese Apellidos">
+                            <input type="text" class="form-control" 
+                            formControlName="apellidos" 
+                            placeholder="Ingrese Apellidos"
+                            [ngClass]="campoNoValido('apellidos') ? 'is-invalid':''"
+                            >
+                            <span *ngIf="campoNoValido('apellidos')" class="text-danger">campo requerido</span>
+
                         </div>
                     </div>
                     <div class="row ">
                         <div class="col-xs-12 col-md-6 mb-3">
                             <label for="">Tipo de Identificación</label>
-                            <input type="text" class="form-control" formControlName="tipo_identificacion" placeholder="Tipo de Indentificacion">
+                            <select formControlName="tipo_identificacion" class="form-control">
+                                <option  >Seleccione </option>
+                                <option value="rut" selected>Rut</option>
+                                <option value="serie">N° documento</option>
+                            </select>
                         </div>
                         <div class="col-xs-12 col-md-6 mb-3">
                             <label for="">Identificación</label>
@@ -35,17 +51,32 @@
                         </div>
                         <div class="col-xs-12 col-md-6 mb-3">
                             <label for="">Teléfono </label>
-                            <input type="text" class="form-control"  formControlName="telefono" placeholder="Ingrese telefono">
+                            <input type="text" class="form-control"  
+                            formControlName="telefono" 
+                            placeholder="Ingrese telefono"
+                            [ngClass]="campoNoValido('telefono') ? 'is-invalid':''"
+                            >
+                            <span *ngIf="campoNoValido('telefono')" class="text-danger">campo requerido</span>
+
                         </div>
                     </div>
                     <div class="row ">
                         <div class="col-xs-12 col-md-6 mb-3">
                             <label for="">Contraseña</label>
-                            <input type="text" class="form-control"  formControlName="password" placeholder="Ingrese contraseña">
+                            <input type="password" class="form-control"  
+                                formControlName="password" 
+                                placeholder="Ingrese contraseña"
+                                [ngClass]="contrasenasNoValidas() ? 'is-invalid':''"
+                                >
                         </div>
                         <div class="col-xs-12 col-md-6 mb-3">
                             <label for="">Confirmar Contraseña </label>
-                            <input type="text" class="form-control"  formControlName="password2" placeholder="repita contraseña">
+                            <input type="password" class="form-control"  
+                            formControlName="password2" 
+                            placeholder="repita contraseña"
+                            [ngClass]="contrasenasNoValidas() ? 'is-invalid':''"
+                            >
+                            <span *ngIf="contrasenasNoValidas()" class="text-danger">contraseñas no coinciden</span>
                         </div>
                     </div>
                     <div class="row  ">
@@ -54,6 +85,7 @@
                                 [useGlobalDomain]="false" size="normal" hl="lang" theme="light" type="image"
                                 formControlName="recaptcha">
                             </ngx-recaptcha2>
+                            <span class="text-danger" *ngIf="handleError()">Verificar captcha</span>
                         </div>
                     </div>
 
@@ -61,7 +93,10 @@
                         <div class="col mb-2 ">
 
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox"  formControlName="terminos">
+                                <input class="form-check-input" type="checkbox" 
+                                 formControlName="terminos" 
+                                 [ngClass]="aceptaTerminos() ? 'is-invalid':''"
+                                 >
                                 <label class="form-check-label" for="flexCheckDefault" style="margin-top: 2px;">
                                     Aceptar las <a href="">politicas y condiciones</a>
                                 </label>

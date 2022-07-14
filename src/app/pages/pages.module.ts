@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+
+import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 
 
 import { PagesComponent } from './pages.component';
-
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 import { ChildRoutesModule } from './child-routes.module';
-import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-
 
 @NgModule({
     declarations: [
@@ -22,7 +26,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
       BrowserModule,
       RouterModule,
       FormsModule,
-      ChildRoutesModule
+      ChildRoutesModule,
+      MatToolbarModule,
+      MatSidenavModule,
+      MatIconModule,
+      MatListModule,
+      MatButtonModule
     ],
     providers: [],
     exports:[

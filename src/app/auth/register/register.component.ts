@@ -1,8 +1,11 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import {ReCaptcha2Component} from 'ngx-captcha';
+import { UserService } from 'src/app/services/user.service';
+import swal from 'sweetalert2'; 
+
 
 @Component({
   selector: 'app-register',
@@ -16,43 +19,66 @@ export class RegisterComponent implements OnInit {
   
   public formSubmited = false;
   public siteKey = environment.siteKey;
-  constructor( private fb:FormBuilder,private cdr: ChangeDetectorRef) { }
+  constructor( private fb:FormBuilder,private cdr: ChangeDetectorRef, private userService:UserService) { }
 
 
   ngOnInit(){
     this.registerForm = this.fb.group({
-      nombre:['Jose Luis',Validators.required],
-      username:['jmunoz',Validators.required],
-      password:['12345',Validators.required],
-      password2:['12345',Validators.required],
+      nombres:['',Validators.required],
+      apellidos:['Muñoz',Validators.required],
+      tipo_identificacion:['rut',Validators.required],
+      identificacion:['12345',[Validators.required,]],
+      correo:['jmunoz@gmail.com',[Validators.required,Validators.email]],
+      telefono:['12345678',[Validators.required,Validators.minLength(8)]],
+      password:['123456',[Validators.required,Validators.minLength(4)]],
+      password2:['123456',[Validators.required,Validators.minLength(4)]],
       terminos:[true,Validators.required],
       recaptcha:['',Validators.required]
   
     },{
-      validators: this.passwordIguales('password','password2')
+      validators: [this.passwordIguales('password','password2')]
     });
   }
  
 
   crearUsuario(){
     this.formSubmited=true;
-    console.log(this.registerForm.value);
-    console.log(this.registerForm)
     if ( this.registerForm.invalid ) {
-      console.log("invalid");
-      
+      this.reset();
       return ;
       
     }else{
-      console.log('valid');
-      console.log(this.registerForm.value);
-       
-    } 
+      this.userService.crearUsuario(this.registerForm.value).subscribe(
+        (resp)=>{
+          console.log(resp);
+          
+          swal.fire({
+            icon: 'success',
+            title: 'Felicidades !!',
+            text: 'Te has registrado exitosamente',
+          });
+          this.reset();
+          
+          
+        },(err) =>{
+            swal.fire({
+              icon: 'error',
+              title: 'Error.',
+              text: err.error.message,
+            });
+            this.reset();
+        }
+        
+
+      );
+
+    }
     
   }
   
   campoNoValido(campo:string):boolean{
     if (this.registerForm.get(campo)?.invalid &&  this.formSubmited) {
+      console.log(this.registerForm.get(campo));
       return true;
     }else{
       return false;
@@ -94,6 +120,23 @@ export class RegisterComponent implements OnInit {
   reset(): void {
     this.captchaElem.resetCaptcha();
   }
+  /*
+  verificarIdentificacion(){
+    return (formGroup: FormGroup)=>{
+      const tipo = formGroup.controls['tipo_identificacion'];
+      const identificacion = formGroup.controls['identificacion'];
+
+      if ( tipo.value === 'rut' ) {
+        
+        identificacion.setErrors( {error: true } )
+      } else {
+        identificacion.setErrors( {error: true } )
+ 
+      }
+  }
+      
+  }*/
+  
  
 
 }
